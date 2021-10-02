@@ -3,11 +3,6 @@ package com.apedano.rabbitmq;
 
 import org.junit.Test;
 
-import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.concurrent.TimeoutException;
-
 public class PublisherIntegrationTest {
 
     @Test
