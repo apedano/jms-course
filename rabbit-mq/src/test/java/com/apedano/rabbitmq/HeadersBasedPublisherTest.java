@@ -1,10 +1,14 @@
 package com.apedano.rabbitmq;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
+@Slf4j
 public class HeadersBasedPublisherTest extends BasicTest{
 
     private static final String HEADER_1 = "header1";
@@ -38,8 +42,6 @@ public class HeadersBasedPublisherTest extends BasicTest{
         HeadersBasedPublisher headersBasedPublisher = new HeadersBasedPublisher(headers);
         publishMessage("Non published message", headersBasedPublisher);
     }
-
-
 
 
 }
