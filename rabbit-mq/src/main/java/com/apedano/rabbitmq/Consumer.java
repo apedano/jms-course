@@ -8,9 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 public class Consumer {
 
     private final String customConsumerTag;
+    private final String queueName;
 
-    public Consumer(String customConsumerTag) {
+    public Consumer(String customConsumerTag, String queueName) {
         this.customConsumerTag = customConsumerTag;
+        this.queueName = queueName;
     }
 
     private final DeliverCallback deliverCallback = ((consumerTag, delivery) -> {
@@ -29,7 +31,7 @@ public class Consumer {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
         //we set autoAck to true to inform RabbitMQ that the message has been consumed
-        channel.basicConsume("Queue-1", true, customConsumerTag, deliverCallback, cancelCallback);
+        channel.basicConsume(queueName, true, customConsumerTag, deliverCallback, cancelCallback);
     }
 
     /**
@@ -39,8 +41,9 @@ public class Consumer {
      */
     public static void main(String[] args) throws Exception {
         String consumerTag = args.length > 0 ? args[0] : "defaultConsumerTag";
-        log.info("Starting consumer [{}] application", consumerTag);
-        Consumer consumer = new Consumer(consumerTag);
+        String queueName = args.length > 1 ? args[1] : "Queue-1";
+        log.info("Starting consumer [{}] [queue={}] application", consumerTag, queueName);
+        Consumer consumer = new Consumer(consumerTag, queueName);
         consumer.consumeMessages();
         log.info("Consumer messages started");
     }
