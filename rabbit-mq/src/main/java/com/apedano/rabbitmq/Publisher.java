@@ -9,11 +9,15 @@ import java.util.Map;
 @Slf4j
 public class Publisher {
 
+    private static final String HEADERS_EXCHANGE_NAME = "";
+    private static final String NON_RELEVANT_ROUTING_KEY = "";
+
     public void publish(String messageContent) throws Exception {
 
         try(AutoClosableChannel autoClosableChannel = new AutoClosableChannel()) {
-            log.info("Publishing message [exchange:{}, routingKey:{}]: {}", getExchange(), getRoutingKey(), messageContent);
-            autoClosableChannel.get().basicPublish(getExchange(), getRoutingKey(), createProperties(), messageContent.getBytes());
+            log.info("Publishing message [exchange:{}, routingKey:{}]: {}", HEADERS_EXCHANGE_NAME, NON_RELEVANT_ROUTING_KEY, messageContent);
+            autoClosableChannel.get().basicPublish(getExchange(), getRoutingKey(),
+                    new AMQP.BasicProperties().builder().headers(getHeaderMap()).build(), messageContent.getBytes());
             log.info("Message published successfully");
         } catch (IOException ioe) {
             log.error("Error while publishing message", ioe);
